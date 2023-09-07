@@ -1,0 +1,48 @@
+
+body {
+    margin: 0;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+#messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.message {
+    display: flex;
+    padding: 12.5px;
+    gap: 25px;
+
+    &.ai {
+        background-color: lightgreen;
+    }
+    &.error {
+        background-color: red;
+    }
+    .image {
+        height: 37.5px;
+        aspect-ratio: 1;
+        border-radius: 10px;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    &.ai > .image {
+        background-image: url('GhatChePT.svg');
+    }
+    &.user > .image {
+        background-image: url('user.svg');
+    }
+    .text {
+        flex: 1;
+    }
+}
+
+#controls {
+    background-color: white
+}
