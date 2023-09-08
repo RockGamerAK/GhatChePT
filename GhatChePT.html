@@ -3,6 +3,7 @@
     <head>
         <title>GhatChePT</title>
         <link rel="stylesheet" href="style.css" />
+        <base href="https://RockGamerAK.github.io/GhatChePT/" />
     </head>
     <body>
         <section id="messages">
@@ -32,6 +33,9 @@
             <select id="selVoices"></select>
         </div>
         <div id="idText"></div>
+        <script>
+            var openaiApiKey = '' // put key here
+        </script>
         <script src="ChatGPT.js"></script>
         <script>
             var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() };
