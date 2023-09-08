@@ -267,13 +267,6 @@ function Send() {
     }
 }
 
-    })
-    apiKeyReq.send()
-  })
-  keyJunkReq.send()
-})
-encodeAmtReq.send()
-
 function ChangeLang(o) {
     if (oSpeechRecognizer) {
         oSpeechRecognizer.lang = selLang.value;
