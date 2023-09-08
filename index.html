@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Downloadable GhatChePT</title>
+    </head>
+    <body>
+        <a id="link" href="/">Download GhatChePT</a>
+        <script>
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET', 'GhatChePT.html')
+            xhr.addEventListener('load', function() {
+                // create a new Blob object with the content you want to assign
+                let blob = new Blob([this.responseText], {type: "text/plain"});
+
+                // create a FileReader object
+                let reader = new FileReader();
+
+                // when the read operation is finished, this will be called
+                reader.onloadend = function() {
+                    // the result attribute contains the contents of the file
+                    console.log(reader.result);
+                }
+
+                // read the file as text
+                reader.readAsText(blob);
+
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'GhatChePT.html';
+            })
+            xhr.send()
+        </script>
+    </body>
+</html>
