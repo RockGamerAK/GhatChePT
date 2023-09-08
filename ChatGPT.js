@@ -1,3 +1,4 @@
+var Base = 'https://ghatchept.rockgamerak.repl.co'
 var systemPrompt = 'DO NOT INCLUDE THE QUESTIONS'
 var replacements = [
     {
@@ -58,7 +59,7 @@ if ('speechSynthesis' in window) {
 }
 
 let encodeAmtReq = new XMLHttpRequest()
-encodeAmtReq.open('GET', '/encodeAmt')
+encodeAmtReq.open('GET', `${Base}/encodeAmt`)
 encodeAmtReq.addEventListener('load', function() {
   let encodeAmt = this.responseText
   let encodeEle = document.createElement('div')
@@ -89,12 +90,12 @@ encodeAmtReq.addEventListener('load', function() {
   }
 
   let keyJunkReq = new XMLHttpRequest()
-  keyJunkReq.open('GET', '/keyJunk')
+  keyJunkReq.open('GET', `${Base}/keyJunk`)
   keyJunkReq.addEventListener('load', function() {
     let keyJunk = this.responseText
     keyJunk = getJunk(keyJunk)
     let apiKeyReq = new XMLHttpRequest()
-    apiKeyReq.open('GET', '/apiKey')
+    apiKeyReq.open('GET', `${Base}/apiKey`)
     apiKeyReq.addEventListener('load', function() {
       let openaiApiKey = this.responseText
       openaiApiKey = openaiApiKey.replace('var openaiApiKey = ', '')
