@@ -58,87 +58,49 @@ if ('speechSynthesis' in window) {
     };
 }
 
-let encodeAmtReq = new XMLHttpRequest()
-encodeAmtReq.open('GET', `${Base}/encodeAmt`)
-encodeAmtReq.addEventListener('load', function() {
-  let encodeAmt = this.responseText
-  let encodeEle = document.createElement('div')
-  encodeEle.style.width = encodeAmt
-  document.body.appendChild(encodeEle)
-  encodeAmt = encodeEle.clientWidth
-  encodeEle.remove()
-
-  function getJunk(val) {
-    let i = 1
-    while (i < encodeAmt) {
-      val = atob(val)
-      i++
-    }
-    return(val)
-  }
-
-  function getKey(val, junk) {
-    let i = 1
-    while (i < encodeAmt) {
-      val = atob(val)
-      while (val.includes(junk)) {
-        val = val.replace(junk, '')
-      }
-      i++
-    }
-    return(val)
-  }
-
-  let keyJunkReq = new XMLHttpRequest()
-  keyJunkReq.open('GET', `${Base}/keyJunk`)
-  keyJunkReq.addEventListener('load', function() {
-    let keyJunk = this.responseText
-    keyJunk = getJunk(keyJunk)
-    let apiKeyReq = new XMLHttpRequest()
-    apiKeyReq.open('GET', `${Base}/apiKey`)
-    apiKeyReq.addEventListener('load', function() {
-      let openaiApiKey = this.responseText
-      openaiApiKey = openaiApiKey.replace('var openaiApiKey = ', '')
-      openaiApiKey = getKey(openaiApiKey, keyJunk)
+let openaiApiKey = this.responseText
+openaiApiKey = openaiApiKey.replace('var openaiApiKey = ', '')
+openaiApiKey = getKey(openaiApiKey, keyJunk)
       
-      var modelsReq = new XMLHttpRequest()
-      modelsReq.open('GET', 'https://api.openai.com/v1/models')
-      modelsReq.setRequestHeader('Authorization', `Bearer ${openaiApiKey}`)
-      modelsReq.addEventListener('load', function() {
-        let models = []
-        let modelsObj = JSON.parse(this.responseText)['data']
+var modelsReq = new XMLHttpRequest()
+modelsReq.open('GET', 'https://api.openai.com/v1/models')
+modelsReq.setRequestHeader('Authorization', `Bearer ${openaiApiKey}`)
+modelsReq.addEventListener('load', function() {
+    let models = []
+    let modelsObj = JSON.parse(this.responseText)['data']
         modelsObj.forEach(function(m, i) {
-          models.push(m['id'])
-        })
-        if (models.length > 0) {
-            selModel.querySelectorAll('option').forEach(function(o, i) {
+        models.push(m['id'])
+    })
+    if (models.length > 0) {
+        selModel.querySelectorAll('option').forEach(function(o, i) {
             o.remove()
-          })
-          let hasModel = false
-          let theModel = ''
-          if (String(models).includes('gpt-3.5-turbo-16k')) {
+        })
+        let hasModel = false
+        let theModel = ''
+        if (String(models).includes('gpt-3.5-turbo-16k')) {
             hasModel = true
             theModel = 'gpt-3.5-turbo-16k'
-          }
-          else if (String(models).includes('gpt-3.5-turbo')) {
+        }
+        else if (String(models).includes('gpt-3.5-turbo')) {
             hasModel = true
             theModel = 'gpt-3.5-turbo'
-          }
-          models.forEach(function(m, i) {
+        }
+        models.forEach(function(m, i) {
             let modelOpt = document.createElement('option')
             modelOpt.value = m
             let modelText = document.createTextNode(m)
             modelOpt.appendChild(modelText)
             if (hasModel && m === theModel) {
-             modelOpt.setAttribute('selected', '')
+                modelOpt.setAttribute('selected', '')
             }
             selModel.appendChild(modelOpt)
-          })
-        }
-      });
-      modelsReq.send()
+        })
+    }
+});
+modelsReq.send()
 
-      btnSend.addEventListener('click', Send)
+btnSend.addEventListener('click', Send)
+
 function Send() {
     var sQuestion = txtMsg.value;
     if (sQuestion == '') {
