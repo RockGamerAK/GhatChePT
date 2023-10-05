@@ -1,4 +1,5 @@
-var Base = 'https://ghatchept.rockgamerak.repl.co'
+// var Base = 'https://ghatchept.rockgamerak.repl.co'
+let openaiApiKey = prompt('KEY PLEASE', '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')
 var systemPrompt = 'DO NOT INCLUDE THE QUESTIONS'
 var replacements = [
     {
@@ -58,10 +59,6 @@ if ('speechSynthesis' in window) {
     };
 }
 
-let openaiApiKey = this.responseText
-openaiApiKey = openaiApiKey.replace('var openaiApiKey = ', '')
-openaiApiKey = getKey(openaiApiKey, keyJunk)
-      
 var modelsReq = new XMLHttpRequest()
 modelsReq.open('GET', 'https://api.openai.com/v1/models')
 modelsReq.setRequestHeader('Authorization', `Bearer ${openaiApiKey}`)
