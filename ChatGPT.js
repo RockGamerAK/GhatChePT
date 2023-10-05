@@ -64,6 +64,7 @@ modelsReq.open('GET', 'https://api.openai.com/v1/models')
 modelsReq.setRequestHeader('Authorization', `Bearer ${openaiApiKey}`)
 modelsReq.addEventListener('load', function() {
     let models = []
+    console.log(this.responseText)
     let modelsObj = JSON.parse(this.responseText)['data']
         modelsObj.forEach(function(m, i) {
         models.push(m['id'])
