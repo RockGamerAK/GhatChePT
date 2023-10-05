@@ -1,5 +1,5 @@
 // var Base = 'https://ghatchept.rockgamerak.repl.co'
-let openaiApiKey = prompt('KEY PLEASE', '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')
+let openaiApiKey = prompt('KEY PLEASE')
 var systemPrompt = 'DO NOT INCLUDE THE QUESTIONS'
 var replacements = [
     {
