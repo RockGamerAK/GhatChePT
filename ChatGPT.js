@@ -111,7 +111,7 @@ modelsReq.addEventListener('load', function() {
 });
 modelsReq.send()
 
-btnSend.addEventListener('click', Send)
+document.getElementById('btnSend').addEventListener('click', Send)
 
 function Send() {
     var sQuestion = txtMsg.value;
