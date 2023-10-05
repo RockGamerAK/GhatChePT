@@ -74,6 +74,9 @@ modelsReq.addEventListener('load', function() {
             }
         }
     }
+    if (!works) {
+        console.log(this.response)
+    }
     if (works) {
         let modelsObj = JSON.parse(this.responseText).data
         modelsObj.forEach(function(m, i) {
