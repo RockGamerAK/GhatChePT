@@ -64,11 +64,22 @@ modelsReq.open('GET', 'https://api.openai.com/v1/models')
 modelsReq.setRequestHeader('Authorization', `Bearer ${openaiApiKey}`)
 modelsReq.addEventListener('load', function() {
     let models = []
-    console.log(this.responseText)
-    let modelsObj = JSON.parse(this.responseText)['data']
+    let works = false
+    if (!!this) {
+        if (!!this.responseText) {
+            if (!!JSON.parse(this.responseText)) {
+                if (!!JSON.parse(this.response).data) {
+                    works = true
+                }
+            }
+        }
+    }
+    if (works) {
+        let modelsObj = JSON.parse(this.responseText).data
         modelsObj.forEach(function(m, i) {
-        models.push(m['id'])
-    })
+            models.push(m['id'])
+        })
+    }
     if (models.length > 0) {
         selModel.querySelectorAll('option').forEach(function(o, i) {
             o.remove()
