@@ -118,19 +118,31 @@ function Send() {
         txtMsg.focus();
         return;
     }
-    let uMessageEle = document.createElement('div')
-    uMessageEle.classList.add('user')
-    uMessageEle.classList.add('message')
-    uMessageEle.innerHTML = `
-        <div class="image"></div>
-        <div class="text">
-            <span>${sQuestion}</span>
-        </div>
-    `
-    messages.appendChild(uMessageEle)
+    let isThere = false
+    let rIndex = ''
+    var content
+    replacements.forEach(function(r, i) {
+        let rName = r['name']
+        if (sQuestion.toLowerCase().startsWith(rName)) {
+            isThere = true
+            rIndex = i
+        }
+    })
+    if (isThere) {
+        if (!!replacements[rIndex]['function']) {
+            let params = s.split(`${replacements['rIndex']['name']} `)[1]
+            if (params[0]) {
+                content = `Opened ${replacements[rIndex]['function'](params)[1]}.`
+            }
+        }
+        else {
+            content = replacements[rIndex]['text']
+        }
+    }
     if (sQuestion.toLowerCase().startsWith('try again')) {
         sQuestion = prevPrompt
     }
+    addElement('user')
 
     var httpReq = new XMLHttpRequest();
     httpReq.open('POST','https://api.openai.com/v1/completions');
@@ -156,97 +168,14 @@ function Send() {
                     s = a[1];
                 }
             }
-            let isThere = false
-            let rIndex = ''
-            replacements.forEach(function(r, i) {
-                let rName = r['name']
-                if (sQuestion.toLowerCase().startsWith(rName)) {
-                    isThere = true
-                    rIndex = i
-                }
-            })
-            if (isThere) {
-                if (!!replacements[rIndex]['function']) {
-                    let params = s.split(`${replacements['rIndex']['name']} `)[1]
-                    if (params[0]) {
-                        s = `Opened ${replacements[rIndex]['function'](params)[1]}.`
-                    }
-                }
-                else {
-                    s = replacements[rIndex]['text']
-                }
-            }
             if (s == '') s = 'No response';
+            addElement('ai', s)
 
-            let aiMessageEle = document.createElement('div')
-            aiMessageEle.classList.add('ai')
-            aiMessageEle.classList.add('message')
-            if (isError) aiMessageEle.classList.add('error')
-
-            let aiImage = document.createElement('div')
-            aiImage.classList.add('image')
-            aiMessageEle.appendChild(aiImage)
-
-            let aiText = document.createElement('span')
-            aiText.classList.add('text')
-            let aiTextSpan = document.createElement('span')
-            aiTextSpan.classList.add('text__span')
-            aiText.appendChild(aiTextSpan)
-            aiMessageEle.appendChild(aiText)
-
-            messages.appendChild(aiMessageEle)
-
-            var cTSpanHTML = ''
-            var sI = 0
-            var interval = setInterval(function() {
-                if (sI < s.length) {
-                    let currLett = s.split('')[sI]
-                    cTSpanHTML = `${cTSpanHTML}${currLett}`
-                    if (currLett === ',') {
-                        // setTimeout(function() {
-                            aiTextSpan.innerHTML = cTSpanHTML
-                        // }, 30)
-                    }
-                    else if (currLett === '.' || currLett === '?' || currLett === '!') {
-                        // setTimeout(function() {
-                            aiTextSpan.innerHTML = cTSpanHTML
-                        // }, 45)
-                    }
-                    else {
-                        aiTextSpan.innerHTML = cTSpanHTML
-                    }
-                    sI++
-                }
-                else {
-                    clearInterval(interval)
-                }
-            }, 50)
             TextToSpeech(s);
         }
     });
     httpReq.addEventListener('error', function() {
-        let errorMessageEle = document.createElement('div')
-        errorMessageEle.classList.add('error')
-        errorMessageEle.classList.add('message')
-
-        let errorText = document.createElement('span')
-        errorText.classList.add('text')
-
-        let errorTextSpan = document.createElement('span')
-        errorTextSpan.classList.add('text__span')
-        let response = {}
-        try {
-            oJson = JSON.parse(this.responseText);
-        } 
-        catch (ex) {
-            response = `Error: ${ex.error.message}`
-        }
-        errorTextSpan.textContent = response
-
-        errorText.appendChild(errorTextSpan)
-        errorMessageEle.appendChild(errorText)
-
-        messages.appendChild(errorMessageEle)
+        addElement('error', this)
     })
 
     var sPrompt = `${systemPrompt}: ${sQuestion}`
@@ -274,6 +203,79 @@ function Send() {
     txtMsg.value = '';
     if (!sQuestion.toLowerCase().startsWith('try again')) {
         prevPrompt = sQuestion
+    }
+}
+
+function addElement(name, content) {
+    let messageEle = document.createElement('div')
+    messageEle.classList.add(name)
+    messageEle.classList.add('message')
+    if (name === 'error') {
+        let errorText = document.createElement('span')
+        errorText.classList.add('text')
+
+        let errorTextSpan = document.createElement('span')
+        errorTextSpan.classList.add('text__span')
+        let response = {}
+        try {
+            oJson = JSON.parse(this.responseText);
+        } 
+        catch (ex) {
+            response = `Error: ${ex.error.message}`
+        }
+        errorTextSpan.textContent = response
+
+        errorText.appendChild(errorTextSpan)
+        errorMessageEle.appendChild(errorText)
+
+        messages.appendChild(errorMessageEle)
+    }
+    else if (name === 'ai') {
+        let aiImage = document.createElement('div')
+        aiImage.classList.add('image')
+        messageEle.appendChild(aiImage)
+    
+        let aiText = document.createElement('span')
+        aiText.classList.add('text')
+        let aiTextSpan = document.createElement('span')
+        aiTextSpan.classList.add('text__span')
+        aiText.appendChild(aiTextSpan)
+        messageEle.appendChild(aiText)
+        messages.appendChild(messageEle)
+
+        var cTSpanHTML = ''
+        var sI = 0
+        var interval = setInterval(function() {
+            if (sI < s.length) {
+                let currLett = s.split('')[sI]
+                cTSpanHTML = `${cTSpanHTML}${currLett}`
+                if (currLett === ',') {
+                    // setTimeout(function() {
+                        aiTextSpan.innerHTML = cTSpanHTML
+                    // }, 30)
+                }
+                else if (currLett === '.' || currLett === '?' || currLett === '!') {
+                    // setTimeout(function() {
+                        aiTextSpan.innerHTML = cTSpanHTML
+                    // }, 45)
+                }
+                else {
+                    aiTextSpan.innerHTML = cTSpanHTML
+                }
+                sI++
+            }
+            else {
+                clearInterval(interval)
+            }
+        }, 50)
+    }
+    else {
+        messageEle.innerHTML = `
+        <div class="image"></div>
+        <div class="text">
+            <span>${content}</span>
+        </div>`
+        messages.appendChild(messageEle)
     }
 }
 
