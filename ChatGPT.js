@@ -131,6 +131,10 @@ function Send() {
     })
     if (isThere) {
         if (!!replacements[rIndex]['function']) {
+            let params = sQuestion.split(`${replacements[rIndex]['name']} `)[1]
+            if (params[0]) {
+                content = `Opened ${replacements[rIndex]['function'](params)[1]}.`
+            }
         }
         else {
             content = replacements[rIndex]['text']
@@ -168,26 +172,6 @@ function Send() {
                 }
             }
             if (s == '') s = 'No response';
-            isThere = false
-            rIndex = ''
-            replacements.forEach(function(r, i) {
-                let rName = r['name']
-                if (sQuestion.toLowerCase().startsWith(rName)) {
-                    isThere = true
-                    rIndex = i
-                }
-            })
-            if (isThere) {
-                if (!!replacements[rIndex]['function']) {
-                    let params = s.split(`${replacements[rIndex]['name']} `)[1]
-                    if (params[0]) {
-                        s = `Opened ${replacements[rIndex]['function'](params)[1]}.`
-                    }
-                }
-                else {
-                    s = replacements[rIndex]['text']
-                }
-            }
             addElement('ai', s)
             TextToSpeech(s);
             
