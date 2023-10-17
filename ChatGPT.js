@@ -268,7 +268,9 @@ function addElement(name, content) {
 
         var cTSpanHTML = ''
         var sI = 0
-        var interval = setInterval(function() {
+        var interval = setInterval(doActs, 50)
+        doActs()
+        function doActs() {
             if (sI < content.length) {
                 let currLett = content.split('')[sI]
                 cTSpanHTML = `${cTSpanHTML}${currLett}`
@@ -290,7 +292,7 @@ function addElement(name, content) {
             else {
                 clearInterval(interval)
             }
-        }, 50)
+        }
     }
     else {
         messageEle.innerHTML = `
