@@ -138,11 +138,11 @@ function Send() {
         }
         else {
             content = replacements[rIndex]['text']
-            addElement('ai', content)
-            TextToSpeech(content);
-            return
         }
-    }
+        addElement('ai', content)
+        TextToSpeech(content);
+        return
+}
     if (sQuestion.toLowerCase().startsWith('try again')) {
         sQuestion = prevPrompt
     }
