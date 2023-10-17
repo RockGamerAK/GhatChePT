@@ -111,8 +111,6 @@ modelsReq.addEventListener('load', function() {
 });
 modelsReq.send()
 
-document.getElementById('btnSend').addEventListener('click', Send)
-
 function Send() {
     var sQuestion = txtMsg.value;
     if (sQuestion == '') {
@@ -320,7 +318,7 @@ function TextToSpeech(s) {
 }
 
 function Mute(b) {
-    if (b) {
+    if (b.checked) {
         selVoices.style.display = 'none';
     } 
     else {

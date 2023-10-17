@@ -11,9 +11,9 @@
         </section>
         <div id="controls">
             <textarea id="txtMsg" rows="5" wrap="soft" style="width: 98%; margin-left: 3px; margin-top: 6px" placeholder="Input Text"></textarea>
-            <button type="button" id="btnSend">Send</button>
+            <button type="button" id="btnSend" onclick="Send()">Send</button>
             <label id="lblSpeak"><input id="chkSpeak" type="checkbox" onclick="SpeechToText()" />Listen</label>
-            <label id="lblMute"><input id="chkMute" type="checkbox" onclick="Mute(this.checked)"/>Mute</label>
+            <label id="lblMute"><input id="chkMute" type="checkbox" onclick="Mute(this)"/>Mute</label>
             <select id="selModel">
                 <option value="text-davinci-003">text-davinci-003</option>
                 <option value="text-davinci-002">text-davinci-002</option>
