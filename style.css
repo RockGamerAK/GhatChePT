@@ -44,5 +44,7 @@ body {
 }
 
 #controls {
+    position: sticky;
+    bottom: 0;
     background-color: white
 }
