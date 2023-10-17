@@ -118,6 +118,7 @@ function Send() {
         txtMsg.focus();
         return;
     }
+    addElement('user')
     let isThere = false
     let rIndex = ''
     var content
@@ -138,11 +139,11 @@ function Send() {
         else {
             content = replacements[rIndex]['text']
         }
+        addElement('ai', content)
     }
     if (sQuestion.toLowerCase().startsWith('try again')) {
         sQuestion = prevPrompt
     }
-    addElement('user')
 
     var httpReq = new XMLHttpRequest();
     httpReq.open('POST','https://api.openai.com/v1/completions');
