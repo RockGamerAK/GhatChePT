@@ -118,7 +118,7 @@ function Send() {
         txtMsg.focus();
         return;
     }
-    addElement('user')
+    addElement('user', sQuestion)
     var isThere = false
     var rIndex = ''
     var content
