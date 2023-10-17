@@ -189,9 +189,13 @@ function Send() {
                 }
             }
             addElement('ai', s)
-
             TextToSpeech(s);
-        }
+            
+            txtMsg.value = '';
+            if (!sQuestion.toLowerCase().startsWith('try again')) {
+                prevPrompt = sQuestion
+            }
+                }
     });
     httpReq.addEventListener('error', function() {
         addElement('error', this)
