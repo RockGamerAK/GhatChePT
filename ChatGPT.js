@@ -269,7 +269,7 @@ function addElement(name, content) {
         var cTSpanHTML = ''
         var sI = 0
         var interval = setInterval(function() {
-            if (sI < s.length) {
+            if (sI < content.length) {
                 let currLett = content.split('')[sI]
                 cTSpanHTML = `${cTSpanHTML}${currLett}`
                 if (currLett === ',') {
